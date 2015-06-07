@@ -13,16 +13,10 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.pi4j</groupId>
-			<artifactId>pi4j-core</artifactId>
-			<version>1.0-SNAPSHOT</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>pi4j-native</artifactId>
-					<groupId>com.pi4j</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+    <groupId>com.pi4j</groupId>
+    <artifactId>pi4j-core</artifactId>
+   <version>1.0</version>
+</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>
@@ -43,12 +37,6 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
 			<scope>provided</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.pi4j</groupId>
-			<artifactId>pi4j-gpio-extension</artifactId>
-			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
