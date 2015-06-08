@@ -1,9 +1,6 @@
 package au.com.rsutton.entryPoint;
 
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
-
-import com.pi4j.io.gpio.PinMode;
 
 public class Monitor implements Runnable
 {

@@ -1,68 +1,33 @@
 package au.com.rsutton.entryPoint;
 
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class Scheduler implements Runnable
-{
+import au.com.rsutton.vaadin.TempSchedule;
 
-	static int startHour;
-	static int endHour;
+public class Scheduler implements Runnable {
 
-	boolean offState = false;
+	private static ConcurrentLinkedQueue<TempSchedule> schedules = new ConcurrentLinkedQueue<>();
 
-	public static void setStart(int start)
-	{
-		startHour = start;
-	}
-
-	public static void setEnd(int end)
-	{
-		endHour = end;
-	}
-
-	public static int getEndHour()
-	{
-		return endHour;
-	}
-	
-	public static int getStartHour()
-	{
-		return startHour;
-	}
-	
 	@Override
-	public void run()
-	{
-		int hour = new Date().getHours();
-		if (startHour > endHour)
-		{
-			if (hour >= startHour || hour < endHour)
-			{
-				offState = true;
-				Trigger.setTemperature(14);
-			} else
-			{
-				if (offState)
-				{
-					offState = false;
-					Trigger.setTemperature(23);
-				}
-			}
-		} else
-		{
-			if (hour >= startHour && hour < endHour)
-			{
-				offState = true;
-				Trigger.setTemperature(14);
-			} else
-			{
-				if (offState)
-				{
-					offState = false;
-					Trigger.setTemperature(23);
-				}
+	public void run() {
+
+		for (TempSchedule schedule : schedules) {
+			Date now = new Date();
+			if (schedule.hour == now.getHours()
+					&& schedule.minute == now.getMinutes()) {
+				Trigger.setTemperature(schedule.temp);
+
 			}
 		}
+
+	}
+
+	public static void setSchedules(List<TempSchedule> pschedules) {
+		schedules.clear();
+		schedules.addAll(pschedules);
+
 	}
 
 }

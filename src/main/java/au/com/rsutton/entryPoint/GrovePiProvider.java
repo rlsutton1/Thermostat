@@ -3,18 +3,17 @@ package au.com.rsutton.entryPoint;
 import java.io.IOException;
 import java.util.concurrent.Semaphore;
 
-//import au.com.rsutton.entryPoint.SynchronizedDeviceWrapper;
-
-import com.pi4j.io.gpio.GpioProvider;
 import com.pi4j.io.gpio.GpioProviderBase;
-import com.pi4j.io.gpio.Pin;
-import com.pi4j.io.gpio.PinMode;
-import com.pi4j.io.gpio.PinState;
-import com.pi4j.io.gpio.exception.InvalidPinException;
-import com.pi4j.io.gpio.exception.UnsupportedPinModeException;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 //import com.pi4j.io.i2c.impl.I2CBusImplBanana;
+//import au.com.rsutton.entryPoint.SynchronizedDeviceWrapper;
+import com.pi4j.io.gpio.PinState;
+import com.pi4j.io.gpio.exception.InvalidPinException;
+import com.pi4j.io.gpio.exception.UnsupportedPinModeException;
+import com.pi4j.io.gpio.GpioProvider;
+import com.pi4j.io.gpio.Pin;
+import com.pi4j.io.gpio.PinMode;
 
 public class GrovePiProvider extends GpioProviderBase implements GpioProvider, GrovePi
 {

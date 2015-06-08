@@ -1,10 +1,7 @@
 package au.com.rsutton.vaadin;
 
-import javax.swing.text.NavigationFilter;
-
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.UI;
 
 public class ThermostatUI extends UI

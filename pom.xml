@@ -13,10 +13,10 @@
 
 	<dependencies>
 		<dependency>
-    <groupId>com.pi4j</groupId>
-    <artifactId>pi4j-core</artifactId>
-   <version>1.0</version>
-</dependency>
+			<groupId>com.pi4j</groupId>
+			<artifactId>pi4j-core</artifactId>
+			<version>1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-server</artifactId>
@@ -62,6 +62,8 @@
 			<version>8.1.10.v20130312</version>
 			<!-- <scope>provided</scope> -->
 		</dependency>
+
+	
 
 	</dependencies>
 	<build>

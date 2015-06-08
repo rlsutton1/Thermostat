@@ -1,7 +1,5 @@
 package au.com.rsutton.entryPoint;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jetty.server.Server;
@@ -19,7 +17,7 @@ public class Main
 	{
 		GrovePi grove = null;
 		// pi =1 , banana = 2
-		if (args[0] != null && args[0].equalsIgnoreCase("sim"))
+		if (args.length> 0 && args[0] != null && args[0].equalsIgnoreCase("sim"))
 		{
 			grove = new GrovePiSimulator();
 		} else
@@ -42,10 +40,12 @@ public class Main
 		executorFactory.getScheduledExecutorService().scheduleAtFixedRate(
 				scheduler, 30, 30, TimeUnit.SECONDS);
 
+		
 		setupJettyV3();
 
 	}
 
+	
 	private static void setupJettyV3() throws Exception
 	{
 		String contextPath = "/";
