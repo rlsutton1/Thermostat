@@ -16,8 +16,12 @@ public class Monitor implements Runnable
 	@Override
 	public void run()
 	{
-		currentTemperature.set((currentTemperature.get() * 0.75)
-				+ (readThermometer() * 0.25));
+		Double currentTempValue = readThermometer();
+		if (!currentTempValue.isInfinite() && !currentTempValue.isNaN())
+		{
+			currentTemperature.set((currentTemperature.get() * 0.75)
+					+ (currentTempValue * 0.25));
+		}
 	}
 
 	public double getTemperature()
