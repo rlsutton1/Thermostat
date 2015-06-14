@@ -48,7 +48,7 @@ public class Main
 				tempLogger, 1, 5, TimeUnit.MINUTES);
 
 		executorFactory.getScheduledExecutorService().scheduleAtFixedRate(
-				forecast, 0, 5, TimeUnit.MINUTES);
+				forecast, 0, 30, TimeUnit.MINUTES);
 
 		
 		setupJettyV3();

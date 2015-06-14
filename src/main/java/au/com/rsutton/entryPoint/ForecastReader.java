@@ -8,14 +8,16 @@ import org.bitpipeline.lib.owm.WeatherForecastResponse;
 import org.bitpipeline.lib.owm.WeatherStatusResponse;
 import org.json.JSONException;
 
+import com.google.common.util.concurrent.AtomicDouble;
+
 public class ForecastReader implements Runnable
 {
 
-	static volatile double currentTemp = 273.15 + 18;
+	static final AtomicDouble currentTemp = new AtomicDouble(273.15 + 18);
 
 	public static int getTemperature()
 	{
-		return (int) (currentTemp - 273.15);
+		return (int) (currentTemp.get() - 273.15);
 	}
 
 	@Override
@@ -34,7 +36,7 @@ public class ForecastReader implements Runnable
 
 				if (weather.hasMain())
 				{
-					currentTemp = weather.getTemp();
+					currentTemp.set(weather.getTemp());
 				}
 
 			}
