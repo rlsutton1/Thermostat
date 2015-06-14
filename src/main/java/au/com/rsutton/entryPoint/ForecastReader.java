@@ -36,7 +36,7 @@ public class ForecastReader implements Runnable
 
 				if (weather.hasMain())
 				{
-					currentTemp.set(weather.getTemp());
+					currentTemp.set(weather.getMain().getTemp());
 				}
 
 			}
