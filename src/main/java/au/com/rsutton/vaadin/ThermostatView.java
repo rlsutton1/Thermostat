@@ -1,8 +1,11 @@
 package au.com.rsutton.vaadin;
 
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import au.com.rsutton.entryPoint.ForecastReader;
 import au.com.rsutton.entryPoint.Monitor;
 import au.com.rsutton.entryPoint.Scheduler;
 import au.com.rsutton.entryPoint.Trigger;
@@ -24,37 +27,21 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.Reindeer;
 
-public class ThermostatView extends VerticalLayout implements View {
+public class ThermostatView extends VerticalLayout implements View
+{
 
 	int setTemp = Trigger.getSetTemperature();
 	private Label setTempLabel;
 	private Label currentTempLabel;
-	private TimeEventField f1;
-	private TimeEventField f2;
-	
-	static final TempSchedule s1 = new TempSchedule();
-	
-	static final TempSchedule s2 = new TempSchedule();
+	private Label outside;
 
 	@Override
-	public void enter(ViewChangeEvent event) {
-
-		UI.getCurrent().setPollInterval(2000);
-		UI.getCurrent().addPollListener(new PollListener() {
-
-			@Override
-			public void poll(PollEvent event) {
-				currentTempLabel.setValue("Temperature "
-						+ Monitor.getCurrentTemp().intValue());
-
-				setTemp = Trigger.getSetTemperature();
-				setTempLabel.setValue("" + setTemp);
-
-			}
-		});
+	public void enter(ViewChangeEvent event)
+	{
 
 		setSizeFull();
 		setHeight("500");
+		outside = new Label();
 
 		Label header = new Label("Thermostat");
 		header.setStyleName(Reindeer.LABEL_H1);
@@ -72,71 +59,113 @@ public class ThermostatView extends VerticalLayout implements View {
 
 		addComponent(tabs);
 		setExpandRatio(tabs, 1);
+
+		UI.getCurrent().setPollInterval(2000);
+		UI.getCurrent().addPollListener(new PollListener()
+		{
+
+	
+			@Override
+			public void poll(PollEvent event)
+			{
+				currentTempLabel.setValue("Inside "
+						+ Monitor.getCurrentTemp().intValue());
+
+				setTemp = Trigger.getSetTemperature();
+				setTempLabel.setValue("" + setTemp);
+				
+				outside.setValue("Outside "+ForecastReader.getTemperature());
+
+			}
+		});
 	}
 
-	private VerticalLayout createCurrentLayout() {
+	private VerticalLayout createCurrentLayout()
+	{
 		VerticalLayout currentLayout = new VerticalLayout();
 		currentLayout.setSizeFull();
 		currentLayout.setHeight("100");
 		currentLayout.setMargin(true);
 
-		currentTempLabel = new Label("Temperature "
+		currentTempLabel = new Label("Inside "
 				+ Monitor.getCurrentTemp().intValue());
+
+		currentLayout.addComponent(outside);
 
 		currentLayout.addComponent(currentTempLabel);
 
 		currentLayout.addComponent(createSetTempLayout());
+		
+		
 		return currentLayout;
 	}
 
-	private Component createNightSettingsLayout() {
+	private Component createNightSettingsLayout()
+	{
 
-		VerticalLayout layout = new VerticalLayout();
-		 f1 = new TimeEventField(s1);
-		 f2 = new TimeEventField(s2);
-		
-		layout.addComponent(f1);
-		layout.addComponent(f2);
-		
+		final VerticalLayout layout = new VerticalLayout();
+
+		final List<TimeEventField> fields = new LinkedList<>();
+
 		Button saveButton = new Button("Save");
-		
-		saveButton.addClickListener(new ClickListener() {
-			
+
+		saveButton.addClickListener(new ClickListener()
+		{
+
 			@Override
-			public void buttonClick(ClickEvent event) {
-				
-				s1.hour = f1.getHour();
-				s1.minute = f1.getMinute();
-				s1.temp = f1.getTemp();
-				
-				s2.hour = f2.getHour();
-				s2.minute = f2.getMinute();
-				s2.temp = f2.getTemp();
-				
-				List<TempSchedule> schedules= new LinkedList<>();
-				schedules.add(s1);
-				schedules.add(s2);
-				Scheduler.setSchedules(schedules);
-				
+			public void buttonClick(ClickEvent event)
+			{
+				for (TimeEventField field : fields)
+				{
+					field.save();
+				}
+				Scheduler.save();
+
 			}
 		});
-		
-		layout.addComponent(saveButton);
-		
 
-//		hour.setValueListener(new RangeFieldValueListener() {
-//
-//			@Override
-//			public void valueChanged(int value) {
-//				// TODO Auto-generated method stub
-//
-//			}
-//		});
+		Button add = new Button("Add");
+		add.addClickListener(new ClickListener()
+		{
+
+			@Override
+			public void buttonClick(ClickEvent event)
+			{
+				TempSchedule s = new TempSchedule();
+				Scheduler.getScheuleList().add(s);
+				TimeEventField f = new TimeEventField(s);
+				layout.addComponent(f);
+				fields.add(f);
+
+			}
+		});
+
+		layout.addComponent(saveButton);
+		layout.addComponent(add);
+
+		for (TempSchedule schedule : Scheduler.getScheuleList())
+		{
+			TimeEventField s = new TimeEventField(schedule);
+
+			layout.addComponent(s);
+			fields.add(s);
+
+		}
+
+		// hour.setValueListener(new RangeFieldValueListener() {
+		//
+		// @Override
+		// public void valueChanged(int value) {
+		// // TODO Auto-generated method stub
+		//
+		// }
+		// });
 
 		return layout;
 	}
 
-	private HorizontalLayout createSetTempLayout() {
+	private HorizontalLayout createSetTempLayout()
+	{
 		HorizontalLayout adjustLayout = new HorizontalLayout();
 		adjustLayout.setSpacing(true);
 		adjustLayout.setMargin(true);
@@ -153,17 +182,22 @@ public class ThermostatView extends VerticalLayout implements View {
 		return adjustLayout;
 	}
 
-	private ClickListener getTemperatureAjuster(final int i) {
-		return new ClickListener() {
+	private ClickListener getTemperatureAjuster(final int i)
+	{
+		return new ClickListener()
+		{
 
 			@Override
-			public void buttonClick(ClickEvent event) {
+			public void buttonClick(ClickEvent event)
+			{
 				setTemp = Trigger.getSetTemperature();
 				setTemp += i;
-				if (setTemp < 12) {
+				if (setTemp < 12)
+				{
 					setTemp = 12;
 				}
-				if (setTemp > 24) {
+				if (setTemp > 24)
+				{
 					setTemp = 24;
 				}
 				setTempLabel.setValue("" + setTemp);

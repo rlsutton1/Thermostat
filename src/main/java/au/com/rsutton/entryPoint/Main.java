@@ -31,6 +31,10 @@ public class Main
 		Monitor monitor = new Monitor(grove);
 		Trigger trigger = new Trigger(grove, monitor);
 		Scheduler scheduler = new Scheduler();
+		ForecastReader forecast = new ForecastReader();
+		scheduler.load();
+		
+		TempLogger tempLogger = new TempLogger();
 
 		ExecutorServiceFactory executorFactory = new DefaultExecutorServiceFactory();
 		executorFactory.getScheduledExecutorService().scheduleAtFixedRate(
@@ -39,6 +43,12 @@ public class Main
 				trigger, 30, 30, TimeUnit.SECONDS);
 		executorFactory.getScheduledExecutorService().scheduleAtFixedRate(
 				scheduler, 30, 30, TimeUnit.SECONDS);
+		
+		executorFactory.getScheduledExecutorService().scheduleAtFixedRate(
+				tempLogger, 1, 5, TimeUnit.MINUTES);
+
+		executorFactory.getScheduledExecutorService().scheduleAtFixedRate(
+				forecast, 0, 5, TimeUnit.MINUTES);
 
 		
 		setupJettyV3();
