@@ -15,6 +15,7 @@ public class Scheduler implements Runnable
 
 	private static ConcurrentLinkedQueue<TempSchedule> schedules = new ConcurrentLinkedQueue<>();
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run()
 	{
@@ -35,6 +36,7 @@ public class Scheduler implements Runnable
 
 	private boolean checkDay(TempSchedule schedule)
 	{
+		@SuppressWarnings("deprecation")
 		int day = new Date().getDay();
 		switch (day)
 		{

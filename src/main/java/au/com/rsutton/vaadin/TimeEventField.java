@@ -6,7 +6,6 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Slider;
 
 public class TimeEventField extends HorizontalLayout
 {

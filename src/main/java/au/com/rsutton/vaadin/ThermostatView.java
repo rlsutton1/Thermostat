@@ -1,7 +1,5 @@
 package au.com.rsutton.vaadin;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,6 +7,7 @@ import au.com.rsutton.entryPoint.ForecastReader;
 import au.com.rsutton.entryPoint.Monitor;
 import au.com.rsutton.entryPoint.Scheduler;
 import au.com.rsutton.entryPoint.Trigger;
+import au.com.rsutton.rollingaverage.PowerMonitor;
 
 import com.vaadin.event.UIEvents.PollEvent;
 import com.vaadin.event.UIEvents.PollListener;
@@ -57,6 +56,8 @@ public class ThermostatView extends VerticalLayout implements View
 		tabs.addTab(createCurrentLayout(), "Current");
 		tabs.addTab(createNightSettingsLayout(), "Schedules");
 
+		tabs.addTab(PowerMonitor.SELF.getVaadinLayout(), "Power Usage");
+
 		addComponent(tabs);
 		setExpandRatio(tabs, 1);
 
@@ -64,17 +65,15 @@ public class ThermostatView extends VerticalLayout implements View
 		UI.getCurrent().addPollListener(new PollListener()
 		{
 
-	
 			@Override
 			public void poll(PollEvent event)
 			{
-				currentTempLabel.setValue("Inside "
-						+ Monitor.getCurrentTemp().intValue());
+				currentTempLabel.setValue("Inside " + Monitor.getCurrentTemp().intValue());
 
 				setTemp = Trigger.getSetTemperature();
 				setTempLabel.setValue("" + setTemp);
-				
-				outside.setValue("Outside "+ForecastReader.getTemperature());
+
+				outside.setValue("Outside " + ForecastReader.getTemperature());
 
 			}
 		});
@@ -87,16 +86,14 @@ public class ThermostatView extends VerticalLayout implements View
 		currentLayout.setHeight("100");
 		currentLayout.setMargin(true);
 
-		currentTempLabel = new Label("Inside "
-				+ Monitor.getCurrentTemp().intValue());
+		currentTempLabel = new Label("Inside " + Monitor.getCurrentTemp().intValue());
 
 		currentLayout.addComponent(outside);
 
 		currentLayout.addComponent(currentTempLabel);
 
 		currentLayout.addComponent(createSetTempLayout());
-		
-		
+
 		return currentLayout;
 	}
 

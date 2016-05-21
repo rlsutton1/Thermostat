@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.bitpipeline.lib.owm.OwmClient;
 import org.bitpipeline.lib.owm.WeatherData;
-import org.bitpipeline.lib.owm.WeatherForecastResponse;
 import org.bitpipeline.lib.owm.WeatherStatusResponse;
 import org.json.JSONException;
 
