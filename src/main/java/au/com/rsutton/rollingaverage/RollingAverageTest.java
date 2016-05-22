@@ -11,7 +11,7 @@ public class RollingAverageTest
 	public void test()
 	{
 		Random rand = new Random();
-		RollingAverage ra = new RollingAverage("",60, null);
+		RollingAverage ra = new RollingAverage("",60);
 
 		for (int i = 0; i < 120; i++)
 		{
@@ -25,9 +25,10 @@ public class RollingAverageTest
 	public void testCascade()
 	{
 		Random rand = new Random();
-		RollingAverage rahour = new RollingAverage("",60, null);
+		RollingAverage rahour = new RollingAverage("",60);
 
-		RollingAverage raminute = new RollingAverage("",60, rahour);
+		RollingAverage raminute = new RollingAverage("",60);
+		raminute.addCascadeListener(rahour);
 
 		for (int i = 0; i < 600; i++)
 		{

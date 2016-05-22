@@ -3,37 +3,50 @@ package au.com.rsutton.rollingaverage;
 import java.util.LinkedList;
 import java.util.List;
 
-public class RollingAverage
+import com.vaadin.ui.Component;
+
+public class RollingAverage implements RollingAverageCascadeListener
 {
 
 	List<Double> values = new LinkedList<>();
 	int sampleSize = 100;
-	RollingAverage cascadeListener;
+	List<RollingAverageCascadeListener> cascadeListeners = new LinkedList<>();
 	private String description;
 
-	public RollingAverage(String description, int sampleSize, RollingAverage cascadeListener)
+	public RollingAverage(String description, int sampleSize)
 	{
 		this.sampleSize = sampleSize;
-		this.cascadeListener = cascadeListener;
+
 		this.description = description;
+	}
+
+	void addCascadeListener(RollingAverageCascadeListener cascadeListener)
+	{
+		cascadeListeners.add(cascadeListener);
 	}
 
 	public String getDescription()
 	{
 		return description;
 	}
-	
+
+	int counter = 0;
+
 	public void addValue(double value)
 	{
-
+		
 		if (values.size() == sampleSize)
 		{
 
-			if (cascadeListener != null)
+			if (counter % sampleSize == 0)
 			{
-				cascadeListener.addValue(getAverage());
+				for (RollingAverageCascadeListener cascadeListener : cascadeListeners)
+				{
+					cascadeListener.addValue(getAverage());
+				}
 			}
 			values.remove(0);
+			counter++;
 		}
 		values.add(value);
 	}
@@ -50,6 +63,11 @@ public class RollingAverage
 
 	public String getAverageInt()
 	{
-		return ""+((int)getAverage());
+		return "" + ((int) getAverage());
+	}
+
+	public List<Double> getData()
+	{
+		return values;
 	}
 }
