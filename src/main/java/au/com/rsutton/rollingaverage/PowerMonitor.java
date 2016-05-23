@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -23,7 +22,6 @@ import com.vaadin.event.UIEvents.PollEvent;
 import com.vaadin.event.UIEvents.PollListener;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
@@ -40,6 +38,8 @@ public enum PowerMonitor implements Runnable
 	RollingAverage ra15minute = new RollingAverage("15 Minute", 15);
 	RollingAverage ra30minute = new RollingAverage("30 Minute", 30);
 
+	RollingAverage ra60hour = new RollingAverage("60 Hour", 60);
+
 	RollingAverage raminute = new RollingAverage("1 Minute", 60);
 
 	Object sync = new Object();
@@ -53,6 +53,7 @@ public enum PowerMonitor implements Runnable
 		raminute.addCascadeListener(ra30minute);
 		raminute.addCascadeListener(rahour);
 		raminute.addCascadeListener(raday);
+		rahour.addCascadeListener(ra60hour);
 		raday.addCascadeListener(ra30days);
 		new Thread(this).start();
 	}
@@ -104,9 +105,12 @@ public enum PowerMonitor implements Runnable
 				{
 					HighChartsSeries secondLine = lineChart.getChartConfiguration().getSeriesList().get(0);
 					HighChartsSeries minuteLine = lineChart.getChartConfiguration().getSeriesList().get(1);
+					HighChartsSeries hourLine = lineChart.getChartConfiguration().getSeriesList().get(2);
 
+					
 					secondLine.clearData();
 					minuteLine.clearData();
+					hourLine.clearData();
 					for (double v : raminute.getData())
 					{
 						secondLine.addData((int) v);
@@ -114,6 +118,10 @@ public enum PowerMonitor implements Runnable
 					for (double v : rahour.getData())
 					{
 						minuteLine.addData((int) v);
+					}
+					for (double v : ra60hour.getData())
+					{
+						hourLine.addData((int) v);
 					}
 					try
 					{
@@ -155,10 +163,12 @@ public enum PowerMonitor implements Runnable
 		lineConfiguration.setBackgroundColor(Colors.WHITE);
 
 		LineChartSeries bananaLine = new LineChartSeries("1 Second");
-		LineChartSeries minuteLine = new LineChartSeries("1 minute");
+		LineChartSeries minuteLine = new LineChartSeries("1 Minute");
+		LineChartSeries hourLine = new LineChartSeries("1 Hour");
 
 		lineConfiguration.getSeriesList().add(bananaLine);
 		lineConfiguration.getSeriesList().add(minuteLine);
+		lineConfiguration.getSeriesList().add(hourLine);
 
 		HighChart lineChart = null;
 		try
