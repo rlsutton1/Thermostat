@@ -29,7 +29,7 @@ public class GrovePiProvider extends GpioProviderBase implements GpioProvider, G
 
 	private static final byte ANALOGUE_READ_COMMAND = 3;
 	private static final byte ANALOGUE_WRITE_COMMAND = 4;
-	
+
 	private static final byte DHT_READ = 40;
 
 	private static final byte UNUSED = 0;
@@ -39,8 +39,7 @@ public class GrovePiProvider extends GpioProviderBase implements GpioProvider, G
 
 	Semaphore lock = new Semaphore(1, true);
 
-	public GrovePiProvider(int busNumber, int address) throws IOException,
-			InterruptedException
+	public GrovePiProvider(int busNumber, int address) throws IOException, InterruptedException
 	{
 		// TODO: reset GrovePi
 
@@ -99,8 +98,7 @@ public class GrovePiProvider extends GpioProviderBase implements GpioProvider, G
 	private void sendPinModeCommand(Pin pin, PinMode mode)
 	{
 		int value = PIN_MODE_INPUT;
-		if (mode == PinMode.ANALOG_OUTPUT || mode == PinMode.PWM_OUTPUT
-				|| mode == PinMode.DIGITAL_OUTPUT)
+		if (mode == PinMode.ANALOG_OUTPUT || mode == PinMode.PWM_OUTPUT || mode == PinMode.DIGITAL_OUTPUT)
 		{
 			value = PIN_MODE_OUTPUT;
 		}
@@ -144,8 +142,7 @@ public class GrovePiProvider extends GpioProviderBase implements GpioProvider, G
 			throw new InvalidPinException(pin);
 
 		byte[] write = new byte[] {
-				DIGITAL_WRITE_COMMAND, (byte) pin.getAddress(), (byte) value,
-				UNUSED };
+				DIGITAL_WRITE_COMMAND, (byte) pin.getAddress(), (byte) value, UNUSED };
 		managedIO(write, null);
 		getPinCache(pin).setAnalogValue(value);
 
@@ -207,8 +204,7 @@ public class GrovePiProvider extends GpioProviderBase implements GpioProvider, G
 			throw new InvalidPinException(pin);
 
 		byte[] write = new byte[] {
-				ANALOGUE_WRITE_COMMAND, (byte) pin.getAddress(), (byte) value,
-				UNUSED };
+				ANALOGUE_WRITE_COMMAND, (byte) pin.getAddress(), (byte) value, UNUSED };
 		managedIO(write, null);
 
 		getPinCache(pin).setAnalogValue(value);
@@ -247,45 +243,45 @@ public class GrovePiProvider extends GpioProviderBase implements GpioProvider, G
 		}
 	}
 
-//	private int managedIORead()
-//	{
-//		try
-//		{
-//			lock.acquire();
-//
-//			int ctr = 0;
-//			while (ctr < 50)
-//			{
-//				try
-//				{
-//					ctr++;
-//					return device.read();
-//				} catch (Exception e)
-//				{
-//
-//				}
-//			}
-//			if (ctr > 1)
-//			{
-//				System.out.println("Write took " + ctr + " attempts");
-//			}
-//			throw new RuntimeException("Too many failed read attempts");
-//		} catch (InterruptedException e1)
-//		{
-//			e1.printStackTrace();
-//			return 0;
-//		} finally
-//		{
-//			lock.release();
-//		}
-//	}
+	// private int managedIORead()
+	// {
+	// try
+	// {
+	// lock.acquire();
+	//
+	// int ctr = 0;
+	// while (ctr < 50)
+	// {
+	// try
+	// {
+	// ctr++;
+	// return device.read();
+	// } catch (Exception e)
+	// {
+	//
+	// }
+	// }
+	// if (ctr > 1)
+	// {
+	// System.out.println("Write took " + ctr + " attempts");
+	// }
+	// throw new RuntimeException("Too many failed read attempts");
+	// } catch (InterruptedException e1)
+	// {
+	// e1.printStackTrace();
+	// return 0;
+	// } finally
+	// {
+	// lock.release();
+	// }
+	// }
 
 	private void managedIO(byte[] write, byte[] read)
 	{
-		managedIO(write,read,1);
+		managedIO(write, read, 1);
 	}
-	
-	private void managedIO(byte[] write, byte[] read,long gap)
+
+	private void managedIO(byte[] write, byte[] read, long gap)
 	{
 
 		try
@@ -354,43 +350,58 @@ public class GrovePiProvider extends GpioProviderBase implements GpioProvider, G
 			lock.release();
 		}
 	}
-	
-	public float readDHT(int sensorPort, int moduleType)
-	{
-//		# dht(pin,module_type), change module_type number to use other kind of dht
-//		# module_type:
-//		#             DHT11 0
-//		#             DHT22 1
-//		#             DHT21 2
-//		#             DHT2301 3
-//
-		// Read and return temperature and humidity from Grove DHT 
-		byte[] write = new byte[] {
-				DHT_READ, (byte) sensorPort, (byte) moduleType,
-				UNUSED };
-		byte[]read = new byte[9];
 
-		managedIO(write,read,600);
-		
-		byte[] bs = new byte[4];
-		
-		for (int i = 1;i < 5;i++)
+	enum DHTType
+	{
+		DHT11(0), DHT22(1), DHT21(2), DHT2301(3);
+
+		private int value;
+
+		DHTType(int value)
 		{
-			bs[i-1] = read[i];
+			this.value = value;
+		}
+
+		public int getValue()
+		{
+			return value;
+		}
+	}
+
+	@Override
+	public float readDHT(int sensorPort, DHTType moduleType)
+	{
+		// # dht(pin,module_type), change module_type number to use other kind
+		// of dht
+		// # module_type:
+		// # DHT11 0
+		// # DHT22 1
+		// # DHT21 2
+		// # DHT2301 3
+		//
+		// Read and return temperature and humidity from Grove DHT
+		byte[] write = new byte[] {
+				DHT_READ, (byte) sensorPort, (byte) moduleType.getValue(), UNUSED };
+		byte[] read = new byte[9];
+
+		managedIO(write, read, 600);
+
+		byte[] bs = new byte[4];
+
+		for (int i = 1; i < 5; i++)
+		{
+			bs[i - 1] = read[i];
 		}
 		return getFloat(bs);
 
 	}
-	
+
 	public static float getFloat(byte[] bytes)
-    {
-        int i = ((bytes[3] & 0xFF) << 24) 
-		| ((bytes[2] & 0xFF) << 16) 
-		| ((bytes[1] & 0xFF) << 8) 
-		| ((bytes[0] & 0xFF) << 0);
- 		float temp = Float.intBitsToFloat(
-            i);
-		return temp; 
-    } 
+	{
+		int i = ((bytes[3] & 0xFF) << 24) | ((bytes[2] & 0xFF) << 16) | ((bytes[1] & 0xFF) << 8)
+				| ((bytes[0] & 0xFF) << 0);
+		float temp = Float.intBitsToFloat(i);
+		return temp;
+	}
 
 }

@@ -2,6 +2,8 @@ package au.com.rsutton.entryPoint;
 
 import java.util.concurrent.atomic.AtomicReference;
 
+import au.com.rsutton.entryPoint.GrovePiProvider.DHTType;
+
 public class Monitor implements Runnable
 {
 	static final AtomicReference<Double> currentTemperature = new AtomicReference<>();
@@ -19,8 +21,7 @@ public class Monitor implements Runnable
 		Double currentTempValue = readThermometer();
 		if (!currentTempValue.isInfinite() && !currentTempValue.isNaN())
 		{
-			currentTemperature.set((currentTemperature.get() * 0.75)
-					+ (currentTempValue * 0.25));
+			currentTemperature.set((currentTemperature.get() * 0.75) + (currentTempValue * 0.25));
 		}
 	}
 
@@ -34,7 +35,8 @@ public class Monitor implements Runnable
 
 		try
 		{
-			return grove.readDHT(GrovePiPin.GPIO_D3.getAddress(), 0) - 1.0d;
+			// was DHT11
+			return grove.readDHT(GrovePiPin.GPIO_D3.getAddress(), DHTType.DHT22) - 1.0d;
 		} catch (Exception e)
 		{
 			e.printStackTrace();

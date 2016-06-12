@@ -1,9 +1,12 @@
 package au.com.rsutton.vaadin;
 
+import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.themes.ValoTheme;
 
+@Theme(ValoTheme.THEME_NAME)
 public class ThermostatUI extends UI
 {
 	Navigator navigator;

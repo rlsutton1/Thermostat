@@ -24,7 +24,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.themes.ValoTheme;
 
 public class ThermostatView extends VerticalLayout implements View
 {
@@ -43,7 +43,7 @@ public class ThermostatView extends VerticalLayout implements View
 		outside = new Label();
 
 		Label header = new Label("Thermostat");
-		header.setStyleName(Reindeer.LABEL_H1);
+		header.setStyleName(ValoTheme.LABEL_HUGE);
 		header.setHeight("30");
 
 		addComponent(header);
@@ -83,10 +83,11 @@ public class ThermostatView extends VerticalLayout implements View
 	{
 		VerticalLayout currentLayout = new VerticalLayout();
 		currentLayout.setSizeFull();
-		currentLayout.setHeight("100");
+		currentLayout.setHeight("400");
 		currentLayout.setMargin(true);
 
 		currentTempLabel = new Label("Inside " + Monitor.getCurrentTemp().intValue());
+		currentTempLabel.setStyleName(ValoTheme.LABEL_HUGE);
 
 		currentLayout.addComponent(outside);
 
@@ -167,13 +168,14 @@ public class ThermostatView extends VerticalLayout implements View
 		adjustLayout.setSpacing(true);
 		adjustLayout.setMargin(true);
 		Button minusButton = new Button(FontAwesome.MINUS);
-		minusButton.setStyleName(Reindeer.BUTTON_SMALL);
+		minusButton.setStyleName(ValoTheme.BUTTON_HUGE);
 		minusButton.addClickListener(getTemperatureAjuster(-1));
 		adjustLayout.addComponent(minusButton);
 		setTempLabel = new Label("" + setTemp);
+		setTempLabel.setStyleName(ValoTheme.LABEL_HUGE);
 		adjustLayout.addComponent(setTempLabel);
 		Button plusButton = new Button(FontAwesome.PLUS);
-		plusButton.setStyleName(Reindeer.BUTTON_SMALL);
+		plusButton.setStyleName(ValoTheme.BUTTON_HUGE);
 		plusButton.addClickListener(getTemperatureAjuster(1));
 		adjustLayout.addComponent(plusButton);
 		return adjustLayout;

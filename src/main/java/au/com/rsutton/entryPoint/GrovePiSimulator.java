@@ -2,6 +2,8 @@ package au.com.rsutton.entryPoint;
 
 import java.util.Random;
 
+import au.com.rsutton.entryPoint.GrovePiProvider.DHTType;
+
 import com.pi4j.io.gpio.Pin;
 import com.pi4j.io.gpio.PinMode;
 import com.pi4j.io.gpio.PinState;
@@ -11,7 +13,7 @@ public class GrovePiSimulator implements GrovePi
 {
 
 	@Override
-	public float readDHT(int address, int i)
+	public float readDHT(int address, DHTType i)
 	{
 		return new Random().nextInt(14) + 14;
 	}

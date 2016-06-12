@@ -27,7 +27,7 @@ public class TimeEventField extends HorizontalLayout
 		// TODO Auto-generated constructor stub
 
 		this.schedule = s1;
-		setWidth("500");
+		setWidth("900");
 
 		int hour = s1.hour;
 		int minute = s1.minute;
@@ -53,29 +53,27 @@ public class TimeEventField extends HorizontalLayout
 	private void createDays(TempSchedule s1)
 	{
 
-		sun =  setUpDayField("Su",s1.sun);
-		mon = setUpDayField("M",s1.mon);
-		tue = setUpDayField("T",s1.tue);
-		wed = setUpDayField("W",s1.wed);
-		thur = setUpDayField("Th",s1.thur);
-		fri = setUpDayField("F",s1.fri);
-		sat = setUpDayField("Sa",s1.sat);
+		sun = setUpDayField("Su", s1.sun);
+		mon = setUpDayField("M", s1.mon);
+		tue = setUpDayField("T", s1.tue);
+		wed = setUpDayField("W", s1.wed);
+		thur = setUpDayField("Th", s1.thur);
+		fri = setUpDayField("F", s1.fri);
+		sat = setUpDayField("Sa", s1.sat);
 
-		
 	}
-	
-	private CheckBox setUpDayField(String caption,Boolean value)
+
+	private CheckBox setUpDayField(String caption, Boolean value)
 	{
 		CheckBox day = new CheckBox(caption);
 		day.setValue(value);
 		addComponent(day);
 		setComponentAlignment(day, Alignment.BOTTOM_CENTER);
 		return day;
-		
+
 	}
 
-	private Property.ValueChangeListener updater(final Component component,
-			final String caption)
+	private Property.ValueChangeListener updater(final Component component, final String caption)
 	{
 		return new Property.ValueChangeListener()
 		{
@@ -86,8 +84,7 @@ public class TimeEventField extends HorizontalLayout
 				Double value;
 				if (event.getProperty().getValue() instanceof Integer)
 				{
-					value = ((Integer) event.getProperty().getValue())
-							.doubleValue();
+					value = ((Integer) event.getProperty().getValue()).doubleValue();
 				} else
 				{
 					value = (Double) event.getProperty().getValue();
