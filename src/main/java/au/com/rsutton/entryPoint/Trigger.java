@@ -7,7 +7,7 @@ public class Trigger implements Runnable
 {
 
 	private Monitor monitor;
-	static volatile private int setTemperature=18;
+	static volatile private double setTemperature = 18;
 	private GrovePi grove;
 
 	Trigger(GrovePi grove, Monitor monitor)
@@ -19,12 +19,12 @@ public class Trigger implements Runnable
 		this.grove = grove;
 	}
 
-	static public void setTemperature(int temperature)
+	static public void setTemperature(double temperature)
 	{
 		setTemperature = temperature;
 	}
 
-	static public int getSetTemperature()
+	static public double getSetTemperature()
 	{
 		return setTemperature;
 	}
@@ -35,12 +35,12 @@ public class Trigger implements Runnable
 		try
 		{
 			double actualTemperature = monitor.getTemperature();
-			System.out.println(actualTemperature+" "+setTemperature);
-			if (actualTemperature > setTemperature + 0.5)
+			System.out.println(actualTemperature + " " + setTemperature);
+			if (actualTemperature > setTemperature + 0.35)
 			{
 				turnOff();
 			}
-			if (actualTemperature < setTemperature - 0.5)
+			if (actualTemperature < setTemperature - 0.35)
 			{
 				turnOn();
 			}

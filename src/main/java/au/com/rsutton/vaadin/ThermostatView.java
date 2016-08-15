@@ -1,5 +1,6 @@
 package au.com.rsutton.vaadin;
 
+import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,10 +30,12 @@ import com.vaadin.ui.themes.ValoTheme;
 public class ThermostatView extends VerticalLayout implements View
 {
 
-	int setTemp = Trigger.getSetTemperature();
+	double setTemp = Trigger.getSetTemperature();
 	private Label setTempLabel;
 	private Label currentTempLabel;
 	private Label outside;
+
+	NumberFormat nf = NumberFormat.getNumberInstance();
 
 	@Override
 	public void enter(ViewChangeEvent event)
@@ -71,7 +74,8 @@ public class ThermostatView extends VerticalLayout implements View
 				currentTempLabel.setValue("Inside " + Monitor.getCurrentTemp().intValue());
 
 				setTemp = Trigger.getSetTemperature();
-				setTempLabel.setValue("" + setTemp);
+
+				setTempLabel.setValue("" + nf.format(setTemp));
 
 				outside.setValue("Outside " + ForecastReader.getTemperature());
 
@@ -169,19 +173,19 @@ public class ThermostatView extends VerticalLayout implements View
 		adjustLayout.setMargin(true);
 		Button minusButton = new Button(FontAwesome.MINUS);
 		minusButton.setStyleName(ValoTheme.BUTTON_HUGE);
-		minusButton.addClickListener(getTemperatureAjuster(-1));
+		minusButton.addClickListener(getTemperatureAjuster(-0.5));
 		adjustLayout.addComponent(minusButton);
 		setTempLabel = new Label("" + setTemp);
 		setTempLabel.setStyleName(ValoTheme.LABEL_HUGE);
 		adjustLayout.addComponent(setTempLabel);
 		Button plusButton = new Button(FontAwesome.PLUS);
 		plusButton.setStyleName(ValoTheme.BUTTON_HUGE);
-		plusButton.addClickListener(getTemperatureAjuster(1));
+		plusButton.addClickListener(getTemperatureAjuster(0.5));
 		adjustLayout.addComponent(plusButton);
 		return adjustLayout;
 	}
 
-	private ClickListener getTemperatureAjuster(final int i)
+	private ClickListener getTemperatureAjuster(final double i)
 	{
 		return new ClickListener()
 		{
@@ -199,7 +203,7 @@ public class ThermostatView extends VerticalLayout implements View
 				{
 					setTemp = 24;
 				}
-				setTempLabel.setValue("" + setTemp);
+				setTempLabel.setValue("" + nf.format(setTemp));
 				Trigger.setTemperature(setTemp);
 
 			}
