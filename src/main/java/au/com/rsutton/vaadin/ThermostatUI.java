@@ -9,6 +9,10 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme(ValoTheme.THEME_NAME)
 public class ThermostatUI extends UI
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Navigator navigator;
 	protected static final String MAINVIEW = "main";
 

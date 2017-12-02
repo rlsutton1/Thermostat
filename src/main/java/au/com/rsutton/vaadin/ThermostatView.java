@@ -4,12 +4,6 @@ import java.text.NumberFormat;
 import java.util.LinkedList;
 import java.util.List;
 
-import au.com.rsutton.entryPoint.ForecastReader;
-import au.com.rsutton.entryPoint.Monitor;
-import au.com.rsutton.entryPoint.Scheduler;
-import au.com.rsutton.entryPoint.Trigger;
-import au.com.rsutton.rollingaverage.PowerMonitor;
-
 import com.vaadin.event.UIEvents.PollEvent;
 import com.vaadin.event.UIEvents.PollListener;
 import com.vaadin.navigator.View;
@@ -27,9 +21,19 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import au.com.rsutton.entryPoint.ForecastReader;
+import au.com.rsutton.entryPoint.Monitor;
+import au.com.rsutton.entryPoint.Scheduler;
+import au.com.rsutton.entryPoint.Trigger;
+import au.com.rsutton.rollingaverage.PowerMonitor;
+
 public class ThermostatView extends VerticalLayout implements View
 {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	double setTemp = Trigger.getSetTemperature();
 	private Label setTempLabel;
 	private Label currentTempLabel;
@@ -67,6 +71,11 @@ public class ThermostatView extends VerticalLayout implements View
 		UI.getCurrent().setPollInterval(2000);
 		UI.getCurrent().addPollListener(new PollListener()
 		{
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void poll(PollEvent event)
@@ -114,6 +123,11 @@ public class ThermostatView extends VerticalLayout implements View
 		saveButton.addClickListener(new ClickListener()
 		{
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void buttonClick(ClickEvent event)
 			{
@@ -129,6 +143,11 @@ public class ThermostatView extends VerticalLayout implements View
 		Button add = new Button("Add");
 		add.addClickListener(new ClickListener()
 		{
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event)
@@ -189,6 +208,11 @@ public class ThermostatView extends VerticalLayout implements View
 	{
 		return new ClickListener()
 		{
+
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
 			@Override
 			public void buttonClick(ClickEvent event)

@@ -78,6 +78,11 @@ public class TimeEventField extends HorizontalLayout
 		return new Property.ValueChangeListener()
 		{
 
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void valueChange(ValueChangeEvent event)
 			{

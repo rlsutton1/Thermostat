@@ -62,7 +62,7 @@ public class Main
 
 	private static void configureGpioForGrove() throws InterruptedException
 	{
-		// the grove continously resets if GPIO_10 is low
+		// the grove continuously resets if GPIO_10 is low
 
 		final GpioController gpio = GpioFactory.getInstance();
 
