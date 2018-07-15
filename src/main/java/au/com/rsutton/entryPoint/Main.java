@@ -52,7 +52,7 @@ public class Main
 		executorFactory.getScheduledExecutorService().scheduleAtFixedRate(trigger, 30, 30, TimeUnit.SECONDS);
 		executorFactory.getScheduledExecutorService().scheduleAtFixedRate(scheduler, 30, 30, TimeUnit.SECONDS);
 
-		executorFactory.getScheduledExecutorService().scheduleAtFixedRate(tempLogger, 1, 5, TimeUnit.MINUTES);
+		executorFactory.getScheduledExecutorService().scheduleAtFixedRate(tempLogger, 1, 1, TimeUnit.MINUTES);
 
 		executorFactory.getScheduledExecutorService().scheduleAtFixedRate(forecast, 0, 30, TimeUnit.MINUTES);
 

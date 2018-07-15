@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import au.com.rsutton.rollingaverage.PowerMonitor;
+
 public class TempLogger implements Runnable
 {
 
@@ -15,13 +17,11 @@ public class TempLogger implements Runnable
 	{
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-		try (PrintWriter out = new PrintWriter(new BufferedWriter(
-				new FileWriter("temperatureLog.csv", true))))
+		try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("temperatureLog.csv", true))))
 		{
-			out.println(sdf.format(new Date()) + ","
-					+ Monitor.getCurrentTemp().intValue() + ","
-					+ Trigger.getSetTemperature() + ","
-					+ ForecastReader.getTemperature());
+			out.println(sdf.format(new Date()) + "," + Monitor.getCurrentTemp().intValue() + ","
+					+ Trigger.getSetTemperature() + "," + ForecastReader.getTemperature() + ","
+					+ PowerMonitor.SELF.getOneMinuteAverage());
 		} catch (IOException e)
 		{
 			e.printStackTrace();

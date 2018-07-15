@@ -8,6 +8,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.vaadin.event.UIEvents.PollEvent;
+import com.vaadin.event.UIEvents.PollListener;
+import com.vaadin.server.Sizeable.Unit;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.VerticalLayout;
+
 import at.downdrown.vaadinaddons.highchartsapi.Colors;
 import at.downdrown.vaadinaddons.highchartsapi.HighChart;
 import at.downdrown.vaadinaddons.highchartsapi.HighChartFactory;
@@ -17,15 +26,6 @@ import at.downdrown.vaadinaddons.highchartsapi.model.ChartConfiguration;
 import at.downdrown.vaadinaddons.highchartsapi.model.ChartType;
 import at.downdrown.vaadinaddons.highchartsapi.model.series.HighChartsSeries;
 import at.downdrown.vaadinaddons.highchartsapi.model.series.LineChartSeries;
-
-import com.vaadin.event.UIEvents.PollEvent;
-import com.vaadin.event.UIEvents.PollListener;
-import com.vaadin.server.Sizeable.Unit;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 
 public enum PowerMonitor implements Runnable
 {
@@ -107,7 +107,6 @@ public enum PowerMonitor implements Runnable
 					HighChartsSeries minuteLine = lineChart.getChartConfiguration().getSeriesList().get(1);
 					HighChartsSeries hourLine = lineChart.getChartConfiguration().getSeriesList().get(2);
 
-					
 					secondLine.clearData();
 					minuteLine.clearData();
 					hourLine.clearData();
@@ -257,5 +256,10 @@ public enum PowerMonitor implements Runnable
 
 		}
 
+	}
+
+	public double getOneMinuteAverage()
+	{
+		return raminute.getAverage();
 	}
 }
